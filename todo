@@ -1,0 +1,4 @@
+TODO add server part
+TODO return strings from methods to send back to clients. If null then dont send anything.
+TODO add methods to App for adding models and services to contex 
+TODO rename project to pin
