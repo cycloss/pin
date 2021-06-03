@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:bridge/src/route.dart';
-import 'package:bridge/src/route_manager.dart';
+import 'package:pin/src/route.dart';
+import 'package:pin/src/route_manager.dart';
 
 // when a query comes in, pass it into the mirror system to instantiate its handler
 class App {

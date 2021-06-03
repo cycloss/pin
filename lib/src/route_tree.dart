@@ -1,12 +1,12 @@
 import 'dart:mirrors';
 
-import 'package:bridge/src/route_parser.dart';
-import 'package:bridge/src/segmented_url.dart';
+import 'package:pin/src/route_parser.dart';
+import 'package:pin/src/segmented_url.dart';
 
 /// A tree with maps at each level which store successive
 /// components of paths. A class mirror checked by the route manager at the end
 class RouteTree {
-  // Root node contains class mirror for @Route('/') would be root['/']
+  // Root node contains class mirror for @Route('/')
   Node root = Node('');
 
   /// adds a route like /users/<id>/car/<color>/ into the tree, segment by segment

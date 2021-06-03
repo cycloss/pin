@@ -1,8 +1,8 @@
-import 'package:bridge/bridge.dart';
-import 'package:bridge/src/route.dart';
-import 'package:bridge/src/route_manager.dart';
-import 'package:bridge/src/route_parser.dart';
-import 'package:bridge/src/segmented_url.dart';
+import 'package:pin/pin.dart';
+import 'package:pin/src/route.dart';
+import 'package:pin/src/route_manager.dart';
+import 'package:pin/src/route_parser.dart';
+import 'package:pin/src/segmented_url.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
@@ -74,7 +74,7 @@ void main() {
 
       var exp5 = ['hello'];
       var act5 = rp.generatePathList('/hello/');
-      expect(act2, exp2);
+      expect(act5, exp5);
     });
   });
 
@@ -87,7 +87,7 @@ void main() {
       expect(List.from(s2), ['hello']);
 
       var s3 = SegmentedUrl('/hello/');
-      expect(List.from(s2), ['hello']);
+      expect(List.from(s3), ['hello']);
     });
   });
 

@@ -1,7 +1,7 @@
 import 'dart:mirrors';
 
-import 'package:bridge/src/route.dart';
-import 'package:bridge/src/route_tree.dart';
+import 'package:pin/src/route.dart';
+import 'package:pin/src/route_tree.dart';
 
 /// Handles the creation of route map at runtime
 class RouteManager {

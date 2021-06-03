@@ -1,3 +1,3 @@
-library bridge;
+library pin;
 
 export 'src/app.dart';
