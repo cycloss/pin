@@ -21,6 +21,11 @@ class Response {
   ContentType contentType = ContentType.json;
 }
 
+class Route {
+  final String url;
+  const Route(this.url);
+}
+
 abstract class RouteController {
   // default implementations do nothing
   void get(Response resp, Context ctxt, Map<String, String> params) {}

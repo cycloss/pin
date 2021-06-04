@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:pin/pin.dart';
 
+@Route('/')
 class BaseRoute extends RouteController {
   @override
   void get(Response resp, Context context, Map<String, String> params) {
@@ -10,7 +11,8 @@ class BaseRoute extends RouteController {
   }
 }
 
-class ComplexRoute extends RouteController {
+@Route('/users/<name>/')
+class HelloRoute extends RouteController {
   @override
   void get(Response resp, Context ctxt, Map<String, String> params) {
     var message = 'Hello ${params['name']}';
@@ -21,8 +23,8 @@ class ComplexRoute extends RouteController {
 void main() async {
   // App setup
   var app = App();
-  app.addRoute('/', BaseRoute);
-  app.addRoute('/users/<name>/', ComplexRoute);
+  app.addRoute(BaseRoute);
+  app.addRoute(HelloRoute);
   await app.start();
 
   // Client setup

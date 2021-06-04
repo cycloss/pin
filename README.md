@@ -11,6 +11,7 @@ The most simple example of an app using Pin looks like this:
 ```dart
 import 'package:pin/pin.dart';
 
+@Route('/')
 class BaseRoute extends RouteController {
   @override
   void get(Response resp, Context context) {
@@ -20,7 +21,7 @@ class BaseRoute extends RouteController {
 
 void main() async {
   var app = App();
-  app.addRoute('/', BaseRoute);
+  app.addRoute(BaseRoute);
   await app.start();
 }
 ```

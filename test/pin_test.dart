@@ -5,6 +5,7 @@ import 'package:pin/src/segmented_url.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
+@Route('/')
 class MainRoute extends RouteController {
   @override
   void get(Response resp, Context ctxt, Map<String, String> paramMap) {
@@ -12,6 +13,7 @@ class MainRoute extends RouteController {
   }
 }
 
+@Route('/second')
 class SecondRoute extends MainRoute {
   @override
   void get(Response resp, Context ctxt, Map<String, String> paramMap) {
@@ -19,6 +21,7 @@ class SecondRoute extends MainRoute {
   }
 }
 
+@Route('/users/<id>/')
 class ThirdRoute extends MainRoute {}
 
 void main() {
@@ -84,16 +87,16 @@ void main() {
 
   test('Route insert tests', () {
     var rm = RouteManager();
-    rm.addRoute('/', MainRoute);
-    var c1 = rm.getRouteBundle('/');
+    rm.addRoute(MainRoute);
+    var c1 = rm.getRouteBundle('/').controller;
     expect(MainRoute, c1.runtimeType);
 
-    rm.addRoute('/second', SecondRoute);
-    var c2 = rm.getRouteBundle('/second');
+    rm.addRoute(SecondRoute);
+    var c2 = rm.getRouteBundle('/second').controller;
     expect(SecondRoute, c2.runtimeType);
 
-    rm.addRoute('/users/<id>/', ThirdRoute);
-    var c3 = rm.getRouteBundle('/users/235');
+    rm.addRoute(ThirdRoute);
+    var c3 = rm.getRouteBundle('/users/235').controller;
     expect(ThirdRoute, c3.runtimeType);
   });
 }

@@ -52,5 +52,5 @@ class App {
     await request.response.close();
   }
 
-  void addRoute(String route, Type classType) => rm.addRoute(route, classType);
+  void addRoute(Type classType) => rm.addRoute(classType);
 }

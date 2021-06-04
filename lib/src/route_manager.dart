@@ -9,10 +9,14 @@ import 'route_bundle.dart';
 class RouteManager {
   RouteTree rt = RouteTree();
 
-  void addRoute(String route, Type classType) {
+  void addRoute(Type classType) {
     var cm = reflectClass(classType);
+    var route = getRoute(cm);
     checkRouteController(cm);
     checkNoArgsConstructor(cm);
+    if (route == null) {
+      throw Exception('No route annotation found for class $classType');
+    }
     rt.addRoute(route, cm);
   }
 
@@ -42,5 +46,14 @@ class RouteManager {
       throw Exception(
           'Class ${cm.reflectedType} must have a no args constructor');
     }
+  }
+
+  String? getRoute(ClassMirror cm) {
+    for (var d in cm.metadata) {
+      if (d.reflectee is Route) {
+        return d.reflectee.url;
+      }
+    }
+    return null;
   }
 }
