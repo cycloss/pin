@@ -3,6 +3,8 @@ import 'dart:mirrors';
 import 'package:pin/src/route_parser.dart';
 import 'package:pin/src/segmented_url.dart';
 
+import 'route_bundle.dart';
+
 /// A tree with maps at each level which store successive
 /// components of paths. A class mirror checked by the route manager is stored at the end
 class RouteTree {
@@ -14,6 +16,7 @@ class RouteTree {
     var rp = RouteParser();
     // can throw if invalid route syntax
     var pathList = rp.generatePathList(route);
+    var params = rp.generateParamList(route);
     var curNode = root;
     for (var i = 0; i < pathList.length; i++) {
       var seg = pathList[i];
@@ -33,35 +36,42 @@ class RouteTree {
       throw Exception('Duplicate route pattern detected for $route');
     }
     curNode.cm = cm;
+    curNode.pathParams = params;
   }
 
   /// walks down the tree based on url
-  ClassMirror getMirrorForUrl(String url) {
-    var current = root;
+  RouteBundle getBundleForUrl(String requestUrl) {
+    var currentNode = root;
 
-    for (var seg in SegmentedUrl(url)) {
-      var next = current[seg];
+    var requestParams = <String>[];
+    for (var seg in SegmentedUrl(requestUrl)) {
+      var next = currentNode[seg];
       if (next == null) {
         // tries the wild card
-        next = current['?'];
+        next = currentNode['?'];
         if (next == null) {
-          throw Exception('No class mirror found for url: $url');
+          throw Exception(
+              'No class mirror found for requested url: $requestUrl');
+        } else {
+          // put the current segment in as a wildcard parameter
+          requestParams.add(seg);
         }
       }
-      current = next;
+      currentNode = next;
     }
-    var cm = current.cm;
-    if (cm == null) {
-      throw Exception('No class mirror found for url: $url');
+    try {
+      return RouteBundle(currentNode, requestParams);
+    } catch (e) {
+      throw Exception(
+          'No class mirror found for requested url: $requestUrl\n Exception: $e');
     }
-    return cm;
   }
 }
 
 class Node {
   String pathComponent;
   ClassMirror? cm;
-  // TODO somehow keep the param list for the route in here
+  List<String>? pathParams;
   Map<String, Node> children = {};
   Node(this.pathComponent);
 

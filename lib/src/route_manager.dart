@@ -3,6 +3,8 @@ import 'dart:mirrors';
 import 'package:pin/src/route.dart';
 import 'package:pin/src/route_tree.dart';
 
+import 'route_bundle.dart';
+
 /// Handles the creation of route map at runtime
 class RouteManager {
   RouteTree rt = RouteTree();
@@ -14,10 +16,8 @@ class RouteManager {
     rt.addRoute(route, cm);
   }
 
-  RouteController getController(String requestUrl) {
-    var cm = rt.getMirrorForUrl(requestUrl);
-    var im = cm.newInstance(Symbol(''), []);
-    return im.reflectee as RouteController;
+  RouteBundle getRouteBundle(String requestUrl) {
+    return rt.getBundleForUrl(requestUrl);
   }
 
   void checkRouteController(ClassMirror cm) {

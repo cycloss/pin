@@ -7,14 +7,14 @@ import 'package:test/scaffolding.dart';
 
 class MainRoute extends RouteController {
   @override
-  void get(Response resp, Context ctxt) {
+  void get(Response resp, Context ctxt, Map<String, String> paramMap) {
     print('In main route');
   }
 }
 
 class SecondRoute extends MainRoute {
   @override
-  void get(Response resp, Context ctxt) {
+  void get(Response resp, Context ctxt, Map<String, String> paramMap) {
     print('In second route');
   }
 }
@@ -85,15 +85,15 @@ void main() {
   test('Route insert tests', () {
     var rm = RouteManager();
     rm.addRoute('/', MainRoute);
-    var c1 = rm.getController('/');
+    var c1 = rm.getRouteBundle('/');
     expect(MainRoute, c1.runtimeType);
 
     rm.addRoute('/second', SecondRoute);
-    var c2 = rm.getController('/second');
+    var c2 = rm.getRouteBundle('/second');
     expect(SecondRoute, c2.runtimeType);
 
     rm.addRoute('/users/<id>/', ThirdRoute);
-    var c3 = rm.getController('/users/235');
+    var c3 = rm.getRouteBundle('/users/235');
     expect(ThirdRoute, c3.runtimeType);
   });
 }
