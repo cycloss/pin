@@ -2,32 +2,43 @@
 
 If Flask for Python is a micro web app framework, then Pin is a pico framework.
 
-pin is written in pure Dart and allows you to create APIs using a simple syntax that uses annotations.
+Pin is written in pure Dart and allows you to create APIs using a simple syntax that uses annotations.
 
 ## Usage
 
-A simple usage example:
+The most simple example of an app using Pin looks like this:
 
 ```dart
 import 'package:pin/pin.dart';
-import 'package:pin/src/route.dart';
 
-@Route('/')
-class MainRoute extends RouteController {
+class BaseRoute extends RouteController {
   @override
-  void get(Context context) {
-    print('In main route');
-    print(context.message);
+  void get(Response resp, Context context) {
+    resp.message = 'Hello world!';
   }
+}
+
+void main() async {
+  var app = App();
+  app.addRoute('/', BaseRoute);
+  await app.start();
 }
 ```
 
-## Features and bugs
+This can then be queried by a client by subsequently running this:
 
-Please file feature requests and bugs at the [issue tracker][tracker].
+```dart
+import 'dart:convert';
+import 'dart:io';
 
-[tracker]: http://example.com/issues/replaceme
+void main() async {
+  var client = HttpClient();
+  var request = await client.get('localhost', 8080, '/');
+  var response = await request.close();
+  print(await response.transform(utf8.decoder).join());
+}
+```
 
 ## How does it work?
 
-pin uses Dart's `mirrors` API to find the classes you have written, then  instantiates and calls methods on them.
+Pin uses Dart's `mirrors` API to find the classes you have written, then  instantiates and calls methods on them.

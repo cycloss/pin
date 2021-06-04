@@ -1,4 +1,1 @@
-TODO add server part
-TODO create data object that has response body and response code for user to write into
-TODO add methods to App for adding models and services to contex 
-TODO rename project to pin
+TODO add methods to App for adding models and services to contex

@@ -7,8 +7,11 @@ import 'package:pin/src/route_tree.dart';
 class RouteManager {
   RouteTree rt = RouteTree();
 
-  RouteManager() {
-    generateRoutes();
+  void addRoute(String route, Type classType) {
+    var cm = reflectClass(classType);
+    checkRouteController(cm);
+    checkNoArgsConstructor(cm);
+    rt.addRoute(route, cm);
   }
 
   RouteController getController(String requestUrl) {
@@ -17,46 +20,27 @@ class RouteManager {
     return im.reflectee as RouteController;
   }
 
-  // adds all routes to the tree
-  void generateRoutes() {
-    var lm = currentMirrorSystem().isolate.rootLibrary;
-    for (var dm in lm.declarations.values) {
-      if (dm is! ClassMirror) continue;
-      var route = getRouteName(dm.metadata);
-      if (route == null) continue;
-      if (!isRouteController(dm)) continue;
-      if (!hasDefaultConstructor(dm)) continue;
-      try {
-        rt.addRoute(route, dm);
-      } catch (e) {
-        print('Failed to add route: $route');
-        print(e);
-      }
-    }
-  }
-
-  static String? getRouteName(List<InstanceMirror> metaDatas) {
-    for (var metaData in metaDatas) {
-      if (metaData.reflectee is Route) {
-        return metaData.reflectee.url;
-      }
-    }
-    return null;
-  }
-
-  static bool isRouteController(ClassMirror cm) {
+  void checkRouteController(ClassMirror cm) {
     // works even when something is a subclass of a subclass like Second route
-    return cm.isSubclassOf(reflectClass(RouteController));
+    var isRouteController = cm.isSubclassOf(reflectClass(RouteController));
+    if (!isRouteController) {
+      throw Exception(
+          'Class ${cm.reflectedType} must be a subclass of RouteController');
+    }
   }
 
-  static bool hasDefaultConstructor(ClassMirror cm) {
+  void checkNoArgsConstructor(ClassMirror cm) {
+    var hasNoArgs = false;
     for (var dm in cm.declarations.values) {
       if (dm is MethodMirror &&
           dm.isConstructor &&
           dm.constructorName == Symbol('')) {
-        return true;
+        hasNoArgs = true;
       }
     }
-    return false;
+    if (!hasNoArgs) {
+      throw Exception(
+          'Class ${cm.reflectedType} must have a no args constructor');
+    }
   }
 }

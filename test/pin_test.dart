@@ -1,4 +1,3 @@
-import 'package:pin/pin.dart';
 import 'package:pin/src/route.dart';
 import 'package:pin/src/route_manager.dart';
 import 'package:pin/src/route_parser.dart';
@@ -6,31 +5,23 @@ import 'package:pin/src/segmented_url.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
-@Route('/')
 class MainRoute extends RouteController {
   @override
-  void get(Context context) {
+  void get(Response resp, Context ctxt) {
     print('In main route');
-    print(context.message);
   }
 }
 
-@Route('/sec')
 class SecondRoute extends MainRoute {
   @override
-  void get(Context context) {
+  void get(Response resp, Context ctxt) {
     print('In second route');
-    print(context.message);
   }
 }
 
-@Route('/users/<id>/')
 class ThirdRoute extends MainRoute {}
 
 void main() {
-  var app = App();
-  app.handleRequest(null);
-
   group('Parser tests', () {
     var rp = RouteParser();
     test('param list test', () {
@@ -93,12 +84,15 @@ void main() {
 
   test('Route insert tests', () {
     var rm = RouteManager();
+    rm.addRoute('/', MainRoute);
     var c1 = rm.getController('/');
     expect(MainRoute, c1.runtimeType);
 
-    var c2 = rm.getController('/sec');
+    rm.addRoute('/second', SecondRoute);
+    var c2 = rm.getController('/second');
     expect(SecondRoute, c2.runtimeType);
 
+    rm.addRoute('/users/<id>/', ThirdRoute);
     var c3 = rm.getController('/users/235');
     expect(ThirdRoute, c3.runtimeType);
   });

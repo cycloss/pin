@@ -4,7 +4,7 @@ import 'package:pin/src/route_parser.dart';
 import 'package:pin/src/segmented_url.dart';
 
 /// A tree with maps at each level which store successive
-/// components of paths. A class mirror checked by the route manager at the end
+/// components of paths. A class mirror checked by the route manager is stored at the end
 class RouteTree {
   // Root node contains class mirror for @Route('/')
   Node root = Node('');
