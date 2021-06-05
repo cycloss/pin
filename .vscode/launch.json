@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "configurations": [
+        {
+            "name": "debug dart",
+            "request": "launch",
+            // MUST add console
+            "console": "terminal",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/pin_example.dart",
+            "enableAsserts": true,
+        }
+    ]
+}

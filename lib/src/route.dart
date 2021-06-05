@@ -5,20 +5,13 @@ class Context {
   // will not have access to controllers in different branches of the tree
   Map<Type, Object> inheretedResources = {};
 
-  T getController<T>() {
-    var controller = inheretedResources[T] as T;
-    return controller;
+  T getService<T>() {
+    var service = inheretedResources[T] as T;
+    return service;
   }
 
-  void addController<T extends Object>(T controller) {
-    inheretedResources[T] = controller;
-  }
-}
-
-class Response {
-  String message = 'empty';
-  int statusCode = 200;
-  ContentType contentType = ContentType.json;
+  void addService<T extends Object>(T service) =>
+      inheretedResources[T] = service;
 }
 
 class Route {
@@ -28,7 +21,11 @@ class Route {
 
 abstract class RouteController {
   // default implementations do nothing
-  void get(Response resp, Context ctxt, Map<String, String> params) {}
+  void get(HttpRequest request, Context ctxt, Map<String, String> params) {}
 
-  // TODO add post delete ect
+  void post(HttpRequest request, Context ctxt, Map<String, String> params) {}
+
+  void patch(HttpRequest request, Context ctxt, Map<String, String> params) {}
+
+  void delete(HttpRequest request, Context ctxt, Map<String, String> params) {}
 }

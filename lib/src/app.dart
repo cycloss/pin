@@ -7,11 +7,14 @@ import 'package:pin/src/route_manager.dart';
 /// Creates a new web app which defaults to address 'localhost' on port 8080
 class App {
   RouteManager rm = RouteManager();
-  Context c = Context();
+  Context context = Context();
   HttpServer? _server;
 
   String address;
   int port;
+
+  String message404 = 'Route not found';
+  ContentType contentType = ContentType.text;
 
   App([this.address = 'localhost', this.port = 8080]);
 
@@ -26,31 +29,35 @@ class App {
 
   void _handleRequest(HttpRequest request) async {
     try {
-      var response = Response();
       var bundle = rm.getRouteBundle(request.uri.path);
       var controller = bundle.controller;
       var paramMap = bundle.paramMap;
       switch (request.method) {
         case 'GET':
-          controller.get(response, c, paramMap);
+          controller.get(request, context, paramMap);
           break;
         default:
           stderr.writeln('Unknown method ${request.method}');
       }
-      await _finaliseResponse(request, response);
     } catch (e) {
       stderr.writeln(e);
       stderr.writeln('Could not find a controller for the requested url');
+      // content type must be before writing a message
+      request.response.headers.contentType = contentType;
+      request.response.write(message404);
     }
+    await _finaliseResponse(request);
   }
 
-  Future<void> _finaliseResponse(HttpRequest request, Response response) async {
-    var httpResp = request.response;
-    httpResp.statusCode = response.statusCode;
-    httpResp.headers.contentType = response.contentType;
-    httpResp.write(response.message);
+  Future<void> _finaliseResponse(HttpRequest request) async {
+    await request.response.flush();
     await request.response.close();
   }
 
   void addRoute(Type classType) => rm.addRoute(classType);
+
+  void addService<T extends Object>(T service) =>
+      context.addService<T>(service);
+
+  void set404Response(String message, ContentType type) {}
 }

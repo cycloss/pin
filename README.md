@@ -10,12 +10,13 @@ The most simple example of an app using Pin looks like this:
 
 ```dart
 import 'package:pin/pin.dart';
+import 'dart:io';
 
 @Route('/')
 class BaseRoute extends RouteController {
   @override
-  void get(Response resp, Context context) {
-    resp.message = 'Hello world!';
+  void get(HttpRequest req, Context context) {
+    req.response.write('Hello world!');
   }
 }
 
@@ -40,6 +41,16 @@ void main() async {
 }
 ```
 
+## A More Complex Example
+
+See `example/pin_example.dart` to see how to use path parameters, and services added to the app.
+
 ## How does it work?
 
-Pin uses Dart's `mirrors` API to find the classes you have written, then  instantiates and calls methods on them.
+Pin uses Dart's `mirrors` API examine the classes you passed into `app.addRoute` and checks for three conditions:
+
+1. A valid `Route` annotation
+2. That the class inherits from `RouteController`
+3. That the class has a no args constructor
+
+When a route is called by a client, the app will then instantiate a corresponding class to respond to that client's query.

@@ -11,12 +11,9 @@ class RouteManager {
 
   void addRoute(Type classType) {
     var cm = reflectClass(classType);
-    var route = getRoute(cm);
     checkRouteController(cm);
     checkNoArgsConstructor(cm);
-    if (route == null) {
-      throw Exception('No route annotation found for class $classType');
-    }
+    var route = getRoute(cm);
     rt.addRoute(route, cm);
   }
 
@@ -48,12 +45,12 @@ class RouteManager {
     }
   }
 
-  String? getRoute(ClassMirror cm) {
+  String getRoute(ClassMirror cm) {
     for (var d in cm.metadata) {
       if (d.reflectee is Route) {
         return d.reflectee.url;
       }
     }
-    return null;
+    throw Exception('Class ${cm.reflectedType} must have a `Route` annotation');
   }
 }

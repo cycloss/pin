@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dart",
+			"command": "dart",
+			"args": [
+				"example/pin_example.dart"
+			],
+			"problemMatcher": [],
+			"label": "run example",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

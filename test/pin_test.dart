@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:pin/src/route.dart';
 import 'package:pin/src/route_manager.dart';
 import 'package:pin/src/route_parser.dart';
@@ -8,7 +10,7 @@ import 'package:test/scaffolding.dart';
 @Route('/')
 class MainRoute extends RouteController {
   @override
-  void get(Response resp, Context ctxt, Map<String, String> paramMap) {
+  void get(HttpRequest request, Context ctxt, Map<String, String> paramMap) {
     print('In main route');
   }
 }
@@ -16,7 +18,7 @@ class MainRoute extends RouteController {
 @Route('/second')
 class SecondRoute extends MainRoute {
   @override
-  void get(Response resp, Context ctxt, Map<String, String> paramMap) {
+  void get(HttpRequest request, Context ctxt, Map<String, String> paramMap) {
     print('In second route');
   }
 }
