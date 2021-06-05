@@ -36,8 +36,17 @@ class App {
         case 'GET':
           controller.get(request, context, paramMap);
           break;
+        case 'POST':
+          controller.post(request, context, paramMap);
+          break;
+        case 'PATCH':
+          controller.patch(request, context, paramMap);
+          break;
+        case 'DELETE':
+          controller.delete(request, context, paramMap);
+          break;
         default:
-          stderr.writeln('Unknown method ${request.method}');
+          throw Exception('Unknown method ${request.method}');
       }
     } catch (e) {
       stderr.writeln(e);
