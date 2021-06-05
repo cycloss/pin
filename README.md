@@ -2,7 +2,7 @@
 
 If Flask for Python is a micro web app framework, then Pin is a pico framework.
 
-Pin is written in pure Dart and allows you to create APIs using a simple syntax that uses annotations.
+Pin is written in pure Dart and allows you to create REST APIs and other web apps using a simple syntax that uses annotations.
 
 ## Usage
 
@@ -45,7 +45,7 @@ void main() async {
 
 ## A More Complex Example
 
-See `example/pin_example.dart` to see how to use path parameters, and services added to the app.
+See `example/pin_example.dart` to see how to use path parameters, and add services to the app.
 
 ## How does it work?
 
@@ -61,4 +61,4 @@ When a route is called by a client, the app will then instantiate a correspondin
 
 ## Other
 
-I made Pin in order to better understand how HTTP and web app frameworks work. If you spot a bug, or want a feature added, drop a comment and let me know. Pull requests welcome.
+I made Pin in order to better understand how HTTP and web app frameworks work. If you spot a bug, need some help, or want a feature added, drop a comment and let me know. Pull requests welcome.
