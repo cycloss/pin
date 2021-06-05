@@ -15,7 +15,7 @@ import 'dart:io';
 @Route('/')
 class BaseRoute extends RouteController {
   @override
-  void get(HttpRequest req, Context context) {
+  void get(HttpRequest req, Context context, Map<String, String> params) {
     req.response.write('Hello world!');
   }
 }
@@ -26,6 +26,8 @@ void main() async {
   await app.start();
 }
 ```
+
+Note that there is no need to call `flush` or `close` on the `HttpRequest`'s `HttpResponse`. Pin will do this for you.
 
 This can then be queried by a client by subsequently running this:
 
@@ -53,4 +55,10 @@ Pin uses Dart's `mirrors` API examine the classes you passed into `app.addRoute`
 2. That the class inherits from `RouteController`
 3. That the class has a no args constructor
 
+If these conditions are not met, the app will terminate immediately with a (hopefully) informative exception.
+
 When a route is called by a client, the app will then instantiate a corresponding class to respond to that client's query.
+
+## Other
+
+I made Pin in order to better understand how HTTP and web app frameworks work. If you spot a bug, or want a feature added, drop a comment and let me know. Pull requests welcome.
